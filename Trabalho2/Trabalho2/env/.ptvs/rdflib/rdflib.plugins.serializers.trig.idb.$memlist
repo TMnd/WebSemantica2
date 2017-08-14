@@ -1,0 +1,8 @@
+VERB
+__all__
+Literal
+_GEN_QNAME_FOR_DT
+TurtleSerializer
+TrigSerializer
+BNode
+defaultdict

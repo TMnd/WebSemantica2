@@ -1,0 +1,110 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<script>
+    $(function () {
+        $('a[data-toggle="tab"]').on('click', function (e) {
+            window.localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = window.localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#myTab a[href="' + activeTab + '"]').tab('show');
+            window.localStorage.removeItem("activeTab");
+        }
+    });
+</script>
+
+<h2>{{ title }}.</h2>
+
+<div class="row">
+    <div class="col-md-12"> 
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist" id="myTab">
+            <li role="presentation" class="active"><a href="#SelectTeam" aria-controls="home" role="tab" data-toggle="tab">Select Team</a></li>
+            <li role="presentation"><a href="#checkclub" aria-controls="profile" role="tab" data-toggle="tab">Team Checker</a></li>
+            <li role="presentation"><a href="#betstatistics" aria-controls="messages" role="tab" data-toggle="tab">Bets Statistics</a></li>
+            <li role="presentation"><a href="#extraQuery1" aria-controls="settings" role="tab" data-toggle="tab">extraQuery1</a></li>
+            <li role="presentation"><a href="#extraQuery2" aria-controls="settings" role="tab" data-toggle="tab">extraQuery2</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="SelectTeam">
+                <h3>Select Team</h3>
+                <br />
+                <p>Select the team to check the team's full calendar.</p>
+                <form action="{% url 'sparql' %}" method="post">
+                    {% csrf_token %}               
+                    <select name="teams" id="teams">
+                        <option value="">Home Team</option>
+                        {% for story in clubsList %}
+                            <option value="{{ story }}">{{ story }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" name ="sparql" value="Submit" id="gameButton">
+                </form>
+                <br />
+                <p>Team Selected: <b>{{teamChoose}}</b></p>
+                {% for story in clubeSelecionado %}
+                    <p>{{ story }}</p>
+                {% endfor %}
+            </div>
+            <div role="tabpanel" class="tab-pane" id="checkclub">
+                <h3>Club Checker</h3>
+                <br /> 
+                <p>Check if the club you want to search exists in the Portugues championship.</p>
+                <form action="{% url 'sparql' %}" method="post">
+                    {% csrf_token %} 
+                    <label for="team_name">Enter the club's name: </label>
+                    <input id="team_name" type="text" name="name_field">
+                    <input name ="sparqlASK" type="submit" value="OK">
+                </form>
+                <br />
+                {% if result %}
+                    <p style="color:green">The club {{insert}} exists in this championship</p>
+                {% else %}
+                    <p style="color:red">The club {{insert}} does not exist in this championship</p>
+                {% endif %}
+            </div>
+            <div role="tabpanel" class="tab-pane" id="betstatistics">
+                <h3>Bets Statistics</h3>
+                <br />
+                <p>Check the bets statistics from two websites.</p>
+                <form action="{% url 'sparql' %}" method="post"> 
+                    {% csrf_token %}            
+                    <input type="submit" name ="sparqlBets" value="Calculate bets">
+                </form>
+                <br />
+                <table style="width: 100%;">
+                    <tr style="border:1px solid black !important">
+                        <td><b>GameID</b></td>
+                        <td><b>Home Team</b></td>
+                        <td><b>Away Team</b></td>
+                        <td><b>B365H</b></td>
+                        <td><b>B365D</b></td>
+                        <td><b>B365A</b></td>
+                        <td><b>BWH</b></td>
+                        <td><b>BWD</b></td>
+                        <td><b>BWA</b></td>
+                        <td><b>B-Result</b></td>
+                        <td><b>BW-Result</b></td>
+                    </tr>
+                    {% for key, values in bets.items %}
+                    <tr style="border-bottom:1px solid black !important">
+                        <td>{{key}}</td>
+                        {% for v in values %}
+                        <td>{{v}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="extraQuery1">Content Settings</div>
+            <div role="tabpanel" class="tab-pane" id="extraQuery2">Content Setdadasdsadatings</div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

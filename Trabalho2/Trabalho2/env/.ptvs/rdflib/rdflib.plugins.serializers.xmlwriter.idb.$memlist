@@ -1,0 +1,6 @@
+codecs
+ESCAPE_ENTITIES
+__all__
+escape
+XMLWriter
+quoteattr

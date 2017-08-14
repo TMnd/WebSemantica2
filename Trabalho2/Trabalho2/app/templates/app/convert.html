@@ -1,0 +1,25 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h3>{{ message }}</h3>
+    <form action="{% url 'convert' %}" method="post">
+        {% csrf_token %}               
+        <select name="tipoConversao" id="tipoConversao">
+            <option value="n3">n3</option>
+            <option value="xml">xml</option>
+        </select>
+        <input type="submit" name ="convert" value="Submit" id="gameButton">
+    </form>
+    <h3>Load from memory to database</h3>
+</div>
+<div class="row">
+    <div class="col-md-12"> 
+        {% for story in lista %}
+            <p>{{story}}</p>
+        {% endfor %} 
+    </div>   
+</div>
+
+{% endblock %}

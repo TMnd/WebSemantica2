@@ -1,0 +1,8 @@
+accept_embedded_turtle
+HostLanguage
+accept_embedded_rdf_xml
+sys
+handle_embeddedRDF
+StringIO
+return_XML
+re

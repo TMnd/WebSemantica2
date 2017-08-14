@@ -1,0 +1,8 @@
+HAS_GDAL
+Serializer
+unicode_literals
+Deserializer
+CoordTransform
+SerializerDoesNotExist
+JSONSerializer
+SpatialReference
